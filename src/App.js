@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import GlobalStyles from "./GlobalStyles";
+import { gql } from "apollo-boost";
+import { HashRouter as Router } from "react-router-dom";
+import { useQuery } from "react-apollo-hooks";
+import Routes from "./Components/Routes";
 
-function App() {
+const CHECK = gql`
+  {
+    check @client
+  }
+`;
+
+export default () => {
+  const {
+    data: { check }
+  } = useQuery(CHECK);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <GlobalStyles />
+      <Router>
+        <Routes check={check}></Routes>
+      </Router>
+    </>
   );
-}
-
-export default App;
+};
